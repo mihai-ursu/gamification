@@ -31,4 +31,11 @@ const questions = [
   },
 ];
 
+export type QuestionType = {
+  id: number;
+  question: string;
+  answers: string[];
+  correct: string;
+};
+
 export default questions;
