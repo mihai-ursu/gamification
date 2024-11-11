@@ -1,7 +1,7 @@
 import ProgressBar from "@/components/course/progress-bar/progress-bar";
 import React from "react";
 
-function MathCoursePage() {
+function MathCourseAfterPage() {
   return (
     <main className="flex h-full min-h-screen w-full flex-col p-8">
       <ProgressBar />
@@ -9,4 +9,4 @@ function MathCoursePage() {
   );
 }
 
-export default MathCoursePage;
+export default MathCourseAfterPage;
