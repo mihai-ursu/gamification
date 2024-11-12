@@ -3,7 +3,6 @@
 import type { QuestionType } from "@/data/math-course-questions";
 import useQuestionsStore from "@/store/course";
 import { Button } from "./answer-button";
-import { useState } from "react";
 
 type Props = {
   question: QuestionType;
