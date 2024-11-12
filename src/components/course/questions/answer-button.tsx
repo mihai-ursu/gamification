@@ -2,11 +2,11 @@ import * as React from "react";
 import { cn } from "@/utils/cn";
 
 export type ButtonProps = {
-  asChild?: boolean;
+  isActive?: boolean;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, ...props }, ref) => {
+  ({ className, isActive, ...props }, ref) => {
     return (
       <button
         className={cn(

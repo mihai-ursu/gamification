@@ -2,12 +2,16 @@ import { create } from "zustand";
 
 interface CourseState {
   correctQuestions: number;
+  selectedAnswer: string | null;
+  setSelectedAnswer: (answer: string | null) => void;
   increment: () => void;
   decrement: () => void;
 }
 
 const useQuestionsStore = create<CourseState>()((set) => ({
   correctQuestions: 0,
+  selectedAnswer: null,
+  setSelectedAnswer: (answer) => set({ selectedAnswer: answer }),
   increment: () =>
     set((state) => ({ correctQuestions: state.correctQuestions + 1 })),
   decrement: () =>
