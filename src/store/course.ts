@@ -8,12 +8,11 @@ interface CourseState {
   selectedAnswer: string | null;
   currentQuestionId: number | null;
   questionLocked: boolean;
-  currentQuestionCorrect: boolean | null;
   correctAnswers: number;
   setRegularQuestionsDone: (done: boolean) => void;
   setWrongQuestions: (questions: QuestionType[]) => void;
+  setCorrectAnswers: (answers: number) => void;
   incrementCorrectAnswers: () => void;
-  setCurrentQuestionCorrect: (correct: boolean | null) => void;
   setQuestionLocked: (locked: boolean) => void;
   setCurrentQuestionId: (id: number) => void;
   setSelectedAnswer: (answer: string | null) => void;
@@ -28,18 +27,16 @@ const useQuestionsStore = create<CourseState>()((set) => ({
   currentQuestionId: null,
   questionLocked: false,
   selectedAnswer: null,
-  currentQuestionCorrect: null,
   correctAnswers: 0,
 
   setRegularQuestionsDone: (done) => set({ regularQuestionsDone: done }),
   setWrongQuestions: (wrongQuestions) => set({ wrongQuestions }),
-  setCurrentQuestionCorrect: (correct) =>
-    set({ currentQuestionCorrect: correct }),
   setQuestionLocked: (locked) => set({ questionLocked: locked }),
   setCurrentQuestionId: (id: number) => set({ currentQuestionId: id }),
   setSelectedAnswer: (answer) => set({ selectedAnswer: answer }),
   incrementCorrectAnswers: () =>
     set((state) => ({ correctAnswers: state.correctAnswers + 1 })),
+  setCorrectAnswers: (answers) => set({ correctAnswers: answers }),
   incrementCurrentQuestion: () =>
     set((state) => ({ currentQuestion: state.currentQuestion + 1 })),
   setCurrentQuestion: (question) => set({ currentQuestion: question }),

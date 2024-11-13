@@ -6,26 +6,29 @@ import { checkAnswer } from "@/actions/actions";
 import { cn } from "@/utils/cn";
 import questions from "@/data/math-course-questions";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const QuestionsFooter = () => {
   const {
     selectedAnswer,
     currentQuestionId,
     questionLocked,
-    currentQuestionCorrect,
     wrongQuestions,
     regularQuestionsDone,
     setQuestionLocked,
-    setCurrentQuestionCorrect,
     incrementCorrectAnswers,
     incrementCurrentQuestion,
     setSelectedAnswer,
     setRegularQuestionsDone,
     setWrongQuestions,
     setCurrentQuestion,
+    setCorrectAnswers,
   } = useQuestionsStore();
 
   const router = useRouter();
+  const [currentQuestionCorrect, setCurrentQuestionCorrect] = useState<
+    null | boolean
+  >(null);
 
   const handleCheckAnswer = async () => {
     if (!selectedAnswer || !currentQuestionId) return;
@@ -55,30 +58,46 @@ const QuestionsFooter = () => {
     });
   };
 
+  const resetProcess = () => {
+    setQuestionLocked(false);
+    setSelectedAnswer(null);
+    setCurrentQuestion(0);
+    setCurrentQuestionCorrect(null);
+    setRegularQuestionsDone(false);
+    setCorrectAnswers(0);
+  };
+
   const handleContinue = () => {
     setQuestionLocked(false);
     setSelectedAnswer(null);
     setCurrentQuestionCorrect(null);
     incrementCurrentQuestion();
 
-    if (wrongQuestions.length === 0 && regularQuestionsDone)
-      router.push("/course/success");
-
     //if regular questions are not done and this is the last question then set done and reset
     if (
       !regularQuestionsDone &&
-      currentQuestionId === questions[questions.length - 1]!.id
+      currentQuestionId === questions[questions.length - 1]?.id
     ) {
       setRegularQuestionsDone(true);
       setCurrentQuestion(0);
+
+      if (wrongQuestions.length === 0) {
+        resetProcess();
+        router.push("/course/success");
+      }
     }
 
     if (
       regularQuestionsDone &&
       wrongQuestions.length > 0 &&
-      currentQuestionId === wrongQuestions[wrongQuestions.length - 1]!.id
+      currentQuestionId === wrongQuestions[wrongQuestions.length - 1]?.id
     ) {
       setCurrentQuestion(0);
+    }
+
+    if (wrongQuestions.length === 0 && regularQuestionsDone) {
+      resetProcess();
+      router.push("/course/success");
     }
   };
 
@@ -108,14 +127,16 @@ const QuestionsFooter = () => {
           >
             Check Answer
           </Button>
-        ) : (
+        ) : null}
+
+        {questionLocked ? (
           <Button
             onClick={handleContinue}
             variant={currentQuestionCorrect ? "green" : "red"}
           >
             Continue
           </Button>
-        )}
+        ) : null}
       </div>
     </footer>
   );
