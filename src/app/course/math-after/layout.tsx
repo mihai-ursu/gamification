@@ -10,7 +10,7 @@ export default function QuestionsLayout({
   return (
     <div className="flex min-h-screen flex-col justify-between">
       <Header />
-      <main className="ml-auto mr-auto flex w-full max-w-[1460px] flex-col justify-between gap-4 p-8 pt-16">
+      <main className="ml-auto mr-auto flex w-full max-w-[1460px] flex-col justify-between gap-4 p-8">
         {children}
       </main>
       <QuestionsFooter />

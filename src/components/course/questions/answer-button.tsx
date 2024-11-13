@@ -3,7 +3,7 @@ import { cn } from "@/utils/cn";
 
 export type ButtonProps = {
   isActive?: boolean;
-  variant?: "blue" | "green";
+  variant?: "blue" | "green" | "red";
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -12,6 +12,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       blue: "cursor-pointer select-none rounded-lg border-b-[1px] border-blue-400 bg-blue-500 px-8 py-3 text-white transition-all duration-150 [box-shadow:0_10px_0_0_#1b6ff8,0_15px_0_0_#1b70f841] active:translate-y-2 active:[box-shadow:0_0px_0_0_#1b6ff8,0_0px_0_0_#1b70f841]",
       green:
         "cursor-pointer select-none rounded-lg border-b-[1px] border-green-400 bg-green-500 px-8 py-3 text-white transition-all duration-150 [box-shadow:0_10px_0_0_#159443,0_15px_0_0_#cbd5e1] active:translate-y-2 active:[box-shadow:0_0px_0_0_#159443,0_0px_0_0_#cbd5e1]",
+      red: "cursor-pointer select-none rounded-lg border-b-[1px] border-red-400 bg-red-500 px-8 py-3 text-white transition-all duration-150 [box-shadow:0_10px_0_0_#b91c1c,0_15px_0_0_#fef2f2] active:translate-y-2 active:[box-shadow:0_0px_0_0_#b91c1c,0_0px_0_0_#fef2f2]",
     };
 
     return (
