@@ -1,11 +1,11 @@
 import questions from "@/data/math-course-questions";
-import Question from "./question";
+import WrongQuestions from "./wrong-questions";
+import RegularQuestions from "./regular-questions";
 const Questions = () => {
   return (
     <div className="flex w-full flex-col items-center justify-center gap-8">
-      {questions.map((question, index) => (
-        <Question key={question.id} question={question} currentIndex={index} />
-      ))}
+      <RegularQuestions questions={questions} />
+      <WrongQuestions />
     </div>
   );
 };

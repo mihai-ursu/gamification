@@ -4,6 +4,8 @@ import useQuestionsStore from "@/store/course";
 import { Button } from "../questions/answer-button";
 import { checkAnswer } from "@/actions/actions";
 import { cn } from "@/utils/cn";
+import questions from "@/data/math-course-questions";
+import { useRouter } from "next/navigation";
 
 const QuestionsFooter = () => {
   const {
@@ -11,22 +13,45 @@ const QuestionsFooter = () => {
     currentQuestionId,
     questionLocked,
     currentQuestionCorrect,
+    wrongQuestions,
+    regularQuestionsDone,
     setQuestionLocked,
     setCurrentQuestionCorrect,
     incrementCorrectAnswers,
     incrementCurrentQuestion,
     setSelectedAnswer,
+    setRegularQuestionsDone,
+    setWrongQuestions,
+    setCurrentQuestion,
   } = useQuestionsStore();
 
+  const router = useRouter();
+
   const handleCheckAnswer = async () => {
-    console.log(selectedAnswer, currentQuestionId);
     if (!selectedAnswer || !currentQuestionId) return;
-    console.log("TEST");
     await checkAnswer(currentQuestionId, selectedAnswer).then((res) => {
       setQuestionLocked(true);
       setCurrentQuestionCorrect(res);
-      if (res) incrementCorrectAnswers();
-      return res;
+
+      if (res) {
+        if (wrongQuestions.find((q) => q.id === currentQuestionId)) {
+          setWrongQuestions(
+            wrongQuestions.filter((q) => q.id !== currentQuestionId),
+          );
+        }
+        incrementCorrectAnswers();
+      }
+
+      if (!res) {
+        if (wrongQuestions.find((q) => q.id === currentQuestionId)) {
+          return;
+        }
+
+        setWrongQuestions([
+          ...wrongQuestions,
+          questions.find((q) => q.id === currentQuestionId)!,
+        ]);
+      }
     });
   };
 
@@ -35,6 +60,26 @@ const QuestionsFooter = () => {
     setSelectedAnswer(null);
     setCurrentQuestionCorrect(null);
     incrementCurrentQuestion();
+
+    if (wrongQuestions.length === 0 && regularQuestionsDone)
+      router.push("/course/success");
+
+    //if regular questions are not done and this is the last question then set done and reset
+    if (
+      !regularQuestionsDone &&
+      currentQuestionId === questions[questions.length - 1]!.id
+    ) {
+      setRegularQuestionsDone(true);
+      setCurrentQuestion(0);
+    }
+
+    if (
+      regularQuestionsDone &&
+      wrongQuestions.length > 0 &&
+      currentQuestionId === wrongQuestions[wrongQuestions.length - 1]!.id
+    ) {
+      setCurrentQuestion(0);
+    }
   };
 
   return (
