@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import useQuestionsStore from "@/store/course";
 import { checkAnswer } from "@/actions/actions";
@@ -6,7 +6,7 @@ import questions from "@/data/math-course-questions";
 
 export const useQuestionFlow = () => {
   const router = useRouter();
-  
+
   const {
     progress,
     state,
@@ -49,10 +49,10 @@ export const useQuestionFlow = () => {
       progress.currentQuestionId,
       progress.selectedAnswer,
     );
-    
-    updateProgress({ 
+
+    updateProgress({
       questionLocked: true,
-      isCorrect
+      isCorrect,
     });
 
     if (isCorrect) {
@@ -70,17 +70,15 @@ export const useQuestionFlow = () => {
   };
 
   const handleNextQuestion = () => {
-    updateProgress({
-      questionLocked: false,
-      selectedAnswer: null,
-      currentQuestionId: null,
-      isCorrect: null,
-    });
-
     // Handle completion of regular questions
     if (!state.regularQuestionsDone && isLastQuestion(questions.length)) {
       setRegularQuestionsDone(true);
-      updateProgress({ currentQuestion: 0 });
+      updateProgress({
+        questionLocked: false,
+        selectedAnswer: null,
+        isCorrect: null,
+        currentQuestion: 0,
+      });
 
       if (!hasWrongQuestions()) {
         handleQuizComplete();
@@ -95,7 +93,13 @@ export const useQuestionFlow = () => {
       hasWrongQuestions() &&
       isLastQuestion(state.wrongQuestions.length)
     ) {
-      updateProgress({ currentQuestion: 0 });
+      // Reset to the first wrong question
+      updateProgress({
+        questionLocked: false,
+        selectedAnswer: null,
+        isCorrect: null,
+        currentQuestion: 0,
+      });
       return;
     }
 
@@ -105,6 +109,13 @@ export const useQuestionFlow = () => {
       return;
     }
 
+    // Normal question progression
+    updateProgress({
+      questionLocked: false,
+      selectedAnswer: null,
+      currentQuestionId: null,
+      isCorrect: null,
+    });
     incrementCurrentQuestion();
   };
 

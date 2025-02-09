@@ -21,7 +21,7 @@ const NavigationFooter = () => {
         canContinue && !isCorrect && "bg-red-100",
       )}
     >
-      <div className="ml-auto mr-auto flex max-w-[1460px] items-center justify-between">
+      <div className="ml-auto mr-auto flex max-w-[1460px] flex-col items-center gap-3 md:flex-row md:justify-between">
         <div>
           {canContinue && isCorrect ? (
             <p className="text-2xl font-bold text-green-500">Correct!</p>
