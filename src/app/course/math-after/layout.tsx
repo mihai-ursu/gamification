@@ -7,11 +7,9 @@ export default function QuestionsLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen flex-col justify-between">
+    <div className="flex h-full min-h-screen flex-col">
       <Header />
-      <main className="ml-auto mr-auto flex w-full max-w-[1460px] flex-col justify-between gap-4 p-8">
-        {children}
-      </main>
+      <main className="flex h-full flex-grow flex-col">{children}</main>
     </div>
   );
 }

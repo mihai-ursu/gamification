@@ -7,8 +7,8 @@ const Question = () => {
   if (!currentQuestion) return null;
 
   return (
-    <div className="w-full max-w-2xl rounded-lg bg-white p-6 shadow-lg">
-      <h2 className="mb-4 text-xl font-bold text-gray-800">
+    <div className="w-full max-w-2xl p-6">
+      <h2 className="mb-4 text-center text-2xl font-bold text-gray-800">
         {currentQuestion.question}
       </h2>
       {isLocked && (
@@ -20,7 +20,7 @@ const Question = () => {
               : "bg-red-100 text-red-800",
           )}
         >
-          {isCorrect ? "Correct!" : "Incorrect. Try again!"}
+          {isCorrect ? "Correct!" : "Incorrect. Try again later!"}
         </div>
       )}
     </div>

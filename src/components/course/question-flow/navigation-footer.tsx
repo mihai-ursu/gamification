@@ -14,9 +14,9 @@ const NavigationFooter = () => {
   } = useQuestionFlow();
 
   return (
-    <footer
+    <div
       className={cn(
-        "bg-slate-100 px-8 py-14",
+        "w-full bg-slate-100 px-8 py-14",
         canContinue && isCorrect && "bg-green-100",
         canContinue && !isCorrect && "bg-red-100",
       )}
@@ -48,7 +48,7 @@ const NavigationFooter = () => {
           </Button>
         ) : null}
       </div>
-    </footer>
+    </div>
   );
 };
 
