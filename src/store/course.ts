@@ -1,45 +1,104 @@
 import { type QuestionType } from "@/data/math-course-questions";
 import { create } from "zustand";
 
-interface CourseState {
-  regularQuestionsDone: boolean;
-  wrongQuestions: QuestionType[];
+interface QuestionProgress {
   currentQuestion: number;
-  selectedAnswer: string | null;
   currentQuestionId: number | null;
+  selectedAnswer: string | null;
   questionLocked: boolean;
   correctAnswers: number;
-  setRegularQuestionsDone: (done: boolean) => void;
-  setWrongQuestions: (questions: QuestionType[]) => void;
-  setCorrectAnswers: (answers: number) => void;
-  incrementCorrectAnswers: () => void;
-  setQuestionLocked: (locked: boolean) => void;
-  setCurrentQuestionId: (id: number) => void;
-  setSelectedAnswer: (answer: string | null) => void;
-  incrementCurrentQuestion: () => void;
-  setCurrentQuestion: (question: number) => void;
+  isCorrect: boolean | null;
 }
 
-const useQuestionsStore = create<CourseState>()((set) => ({
-  regularQuestionsDone: false,
-  wrongQuestions: [],
+interface QuestionState {
+  regularQuestionsDone: boolean;
+  wrongQuestions: QuestionType[];
+}
+
+interface CourseState {
+  progress: QuestionProgress;
+  state: QuestionState;
+  isQuizComplete: () => boolean;
+  hasWrongQuestions: () => boolean;
+  isLastQuestion: (totalQuestions: number) => boolean;
+  updateProgress: (updates: Partial<QuestionProgress>) => void;
+  incrementCorrectAnswers: () => void;
+  incrementCurrentQuestion: () => void;
+  resetProgress: () => void;
+  setRegularQuestionsDone: (done: boolean) => void;
+  addWrongQuestion: (question: QuestionType) => void;
+  removeWrongQuestion: (questionId: number) => void;
+  resetQuestionState: () => void;
+}
+
+const initialProgress: QuestionProgress = {
   currentQuestion: 0,
   currentQuestionId: null,
-  questionLocked: false,
   selectedAnswer: null,
+  questionLocked: false,
   correctAnswers: 0,
+  isCorrect: null,
+};
 
-  setRegularQuestionsDone: (done) => set({ regularQuestionsDone: done }),
-  setWrongQuestions: (wrongQuestions) => set({ wrongQuestions }),
-  setQuestionLocked: (locked) => set({ questionLocked: locked }),
-  setCurrentQuestionId: (id: number) => set({ currentQuestionId: id }),
-  setSelectedAnswer: (answer) => set({ selectedAnswer: answer }),
+const initialState: QuestionState = {
+  regularQuestionsDone: false,
+  wrongQuestions: [],
+};
+
+const useQuestionsStore = create<CourseState>()((set, get) => ({
+  progress: initialProgress,
+  state: initialState,
+  isQuizComplete: () =>
+    get().state.regularQuestionsDone && get().state.wrongQuestions.length === 0,
+  hasWrongQuestions: () => get().state.wrongQuestions.length > 0,
+  isLastQuestion: (totalQuestions: number) =>
+    get().progress.currentQuestion === totalQuestions - 1,
+  updateProgress: (updates) =>
+    set((state) => ({
+      progress: { ...state.progress, ...updates },
+    })),
   incrementCorrectAnswers: () =>
-    set((state) => ({ correctAnswers: state.correctAnswers + 1 })),
-  setCorrectAnswers: (answers) => set({ correctAnswers: answers }),
+    set((state) => ({
+      progress: {
+        ...state.progress,
+        correctAnswers: state.progress.correctAnswers + 1,
+      },
+    })),
   incrementCurrentQuestion: () =>
-    set((state) => ({ currentQuestion: state.currentQuestion + 1 })),
-  setCurrentQuestion: (question) => set({ currentQuestion: question }),
+    set((state) => ({
+      progress: {
+        ...state.progress,
+        currentQuestion: state.progress.currentQuestion + 1,
+      },
+    })),
+  resetProgress: () =>
+    set(() => ({
+      progress: initialProgress,
+    })),
+  setRegularQuestionsDone: (done) =>
+    set((state) => ({
+      state: { ...state.state, regularQuestionsDone: done },
+    })),
+  addWrongQuestion: (question) =>
+    set((state) => ({
+      state: {
+        ...state.state,
+        wrongQuestions: [...state.state.wrongQuestions, question],
+      },
+    })),
+  removeWrongQuestion: (questionId) =>
+    set((state) => ({
+      state: {
+        ...state.state,
+        wrongQuestions: state.state.wrongQuestions.filter(
+          (q) => q.id !== questionId,
+        ),
+      },
+    })),
+  resetQuestionState: () =>
+    set(() => ({
+      state: initialState,
+    })),
 }));
 
 export default useQuestionsStore;

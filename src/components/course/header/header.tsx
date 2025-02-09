@@ -1,5 +1,5 @@
 import React from "react";
-import ProgressBar from "../progress-bar/progress-bar";
+import ProgressBar from "../question-flow/progress-bar";
 import questions from "@/data/math-course-questions";
 
 export default function Header() {

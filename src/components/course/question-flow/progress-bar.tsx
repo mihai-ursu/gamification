@@ -4,7 +4,7 @@ import useQuestionsStore from "@/store/course";
 import { cn } from "@/utils/cn";
 
 const ProgressBar = ({ noOfQuestions }: { noOfQuestions: number }) => {
-  const { correctAnswers } = useQuestionsStore();
+  const { correctAnswers } = useQuestionsStore().progress;
   const percentage = Math.round((correctAnswers / noOfQuestions) * 100);
 
   return (

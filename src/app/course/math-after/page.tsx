@@ -1,10 +1,10 @@
 import React from "react";
-import Questions from "@/components/course/questions/questions";
+import QuestionController from "@/components/course/question-flow/question-controller";
 
 function MathCourseAfterPage() {
   return (
     <>
-      <Questions />
+      <QuestionController />
     </>
   );
 }
